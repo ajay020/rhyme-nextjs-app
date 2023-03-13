@@ -12,12 +12,17 @@ export function Navbar() {
      { user && <p className={styles.user_name}> Hi, {user?.name}</p>}
 
       {user ? (
+        <>
+        <p>
+          <a href="/write_poem">Write Poem</a>
+        </p>
         <p className={styles.login_btn}>
           <a onClick={() => logout()}>Logout</a>
         </p>
+        </>
+        
       ) : (
         <>
-          {" "}
           <p className={styles.register_btn}>
             <a href="/register">Register</a>
           </p>

@@ -103,7 +103,7 @@ export function AuthProvider({ children }: Props) {
 }
 
 async function registerUser(userData: UserType) {
-  const response = await fetch(BASE_URL + "/api/auth/signu", {
+  const response = await fetch(BASE_URL + "/api/auth/signup", {
     method: "post",
     headers: {
       "Content-Type": "application/json",

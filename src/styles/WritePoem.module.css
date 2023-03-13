@@ -1,0 +1,28 @@
+.write_poem {
+  background-color: aquamarine;
+  width: 500px;
+  margin: 8px auto;
+  padding: 4px;
+}
+
+.form_group {
+  margin: 8px;
+}
+
+.form_group input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  outline: none;
+}
+
+.form_group textarea {
+  outline: none;
+  width: 100%;
+  padding: 2px 4px;
+}
+
+.form_group button {
+  padding: 4px;
+  cursor: pointer;
+}
