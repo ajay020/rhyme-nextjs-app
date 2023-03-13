@@ -22,9 +22,7 @@ export default function Home({poems} : PropTypes) {
       </Head>
       <main className={styles.main}>
         {
-            poems.map(poem => <div>
-                <Poem poem={poem} />
-            </div>)            
+            poems.map(poem =>  <Poem poem={poem} key={poem._id} />)            
         }
       </main>
     </>
@@ -32,8 +30,11 @@ export default function Home({poems} : PropTypes) {
 }
 
 export async function getStaticProps(){
-    const res = await fetch('http://localhost:8000/api/poem');
+    const res = await fetch('http://localhost:8000/api/poem/');
+
     const poems = await res.json();
+
     console.log(poems);
+
     return { props: { poems } };
 }

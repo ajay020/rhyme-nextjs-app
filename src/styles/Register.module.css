@@ -1,0 +1,25 @@
+.register {
+  background-color: bisque;
+  width: 500px;
+  margin: 8px auto;
+  padding: 1rem;
+}
+
+.form_group {
+  /* background-color: aqua; */
+  box-sizing: border-box;
+  margin: 8px 0;
+}
+
+.form_group input {
+  padding: 4px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+.form_group button {
+  padding: 4px 8px;
+  width: 50%;
+  margin: 0 auto;
+  display: block;
+}
