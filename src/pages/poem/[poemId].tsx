@@ -22,7 +22,6 @@ export default function SinglePoem({poem} : Props){
     const deletePoem = async () =>{
 
         try {
-
             const userString = localStorage.getItem('user');
             let user;
             if(userString){
@@ -38,12 +37,11 @@ export default function SinglePoem({poem} : Props){
                 }
             });            
             const data = await response.json();
-            console.log(data);
+            alert("Poem Deleted!");
             router.push('/');
         } catch (error:any) {
             console.log(error.message);
         }
-
     }
 
     return(
@@ -52,7 +50,7 @@ export default function SinglePoem({poem} : Props){
                 <h3>{poem.title}</h3>
                 <p>{poem?.author?.name}</p>
                 <div className={styles.actions}>
-                    <a href="#"
+                    <a href={`/update-poem/${poem._id}`}
                     className={styles.btn}>Update</a>
                     <a href="#"
                     onClick={deletePoem}
@@ -84,7 +82,7 @@ export const getServerSideProps : GetServerSideProps<Props> = async (
     const response  = await fetch(BASE_URL + `/api/poem/${poemId}` );
     const poem = await response.json();
 
-    console.log(poem);
+    // console.log(poem);
 
     // Pass the post data as props to the component
     return {
