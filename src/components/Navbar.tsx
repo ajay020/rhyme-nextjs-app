@@ -7,7 +7,7 @@ export function Navbar() {
 
   return (
     <div className={styles.navbar}>
-      <p className={styles.brand_title}>Rhyme</p>
+      <p className={styles.brand_title}> <a href="/"> Rhyme</a></p>
 
      { user && <p className={styles.user_name}> Hi, {user?.name}</p>}
 

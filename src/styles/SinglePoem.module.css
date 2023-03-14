@@ -1,0 +1,27 @@
+.container {
+  background-color: lightslategray;
+  width: 80%;
+  /* height: 90vh; */
+  margin: 0px auto;
+  padding: 1rem;
+}
+
+.header {
+  text-align: center;
+  background-color: aquamarine;
+}
+
+.btn {
+  display: block;
+}
+
+.header h3 {
+  text-transform: capitalize;
+}
+
+.body {
+  /* background-color: brown; */
+  /* width: 50%; */
+  margin: 18px auto;
+  text-align: center;
+}

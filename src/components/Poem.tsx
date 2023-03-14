@@ -6,11 +6,13 @@ type PropType = {
 }
 
 export function Poem({poem} : PropType){
-    return <div className={styles.poem}>
-        <h3>{poem.title}</h3>
-        <hr />
-        
-        <p>{poem.description}</p>
-    </div>
+    return <a href= {"/poem/" + poem._id}  className={styles.poem}>
+         <div className={styles.poem_body} >
+            <h3>{poem.title}</h3>
+            <hr />
+            
+            <p>{poem.description}</p>
+         </div>
+    </a>
 }
 
