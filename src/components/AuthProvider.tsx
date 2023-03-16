@@ -10,7 +10,7 @@ interface Props {
 type UserType = {
   name: string;
   email: string;
-  password: string;
+  token:string 
 };
 
 interface ContextType {
