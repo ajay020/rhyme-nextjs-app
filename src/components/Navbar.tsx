@@ -1,36 +1,34 @@
-import styles from "../styles/Navbar.module.css";
 import { useContext } from "react";
 import { AuthContext } from "./AuthProvider";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {  faAdd, faUser} from "@fortawesome/free-solid-svg-icons";
+import styles from "../styles/Navbar.module.css";
 
-export function Navbar() {
+export default function Navbar() {
   const { logout, user } = useContext(AuthContext);
 
   return (
     <div className={styles.navbar}>
-      <p className={styles.brand_title}> <a href="/"> Rhyme</a></p>
+      <h3 className={styles.brand_title}>
+        <a href="/"> Rhyme</a>
+      </h3>
 
-     { user && <p className={styles.user_name}> Hi, {user?.name}</p>}
+      <div className={styles.write_poem}>
+        <a href="/write_poem">
+          <span>Write</span>
+          <FontAwesomeIcon
+              icon={faAdd}
+              style={{ fontSize: 14, color: "white" }}
+        />
+        </a>
+      </div>
 
-      {user ? (
-        <>
-        <p>
-          <a href="/write_poem">Write Poem</a>
-        </p>
-        <p className={styles.login_btn}>
-          <a onClick={() => logout()}>Logout</a>
-        </p>
-        </>
-        
-      ) : (
-        <>
-          <p className={styles.register_btn}>
-            <a href="/register">Register</a>
-          </p>
-          <p className={styles.login_btn}>
-            <a href="/login">Login</a>
-          </p>
-        </>
-      )}
-    </div>
-  );
+      <div className={styles.user_icon}>
+        <FontAwesomeIcon
+              icon={faUser}
+              style={{ fontSize: 14, color: "white" }}
+        />
+      </div>
+
+    </div>)
 }

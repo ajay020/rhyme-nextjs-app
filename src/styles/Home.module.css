@@ -1,8 +1,10 @@
 .main {
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
   align-items: center;
   padding: 1rem 1rem;
-  background-color: aquamarine;
+  /* background-color: aquamarine; */
   /* min-height: 100vh; */
 }

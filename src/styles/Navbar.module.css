@@ -1,23 +1,36 @@
 .navbar {
   display: flex;
-  background-color: rgb(179, 166, 166);
-  padding: 12px 10px;
+  /* justify-content: space-between; */
+  align-items: center;
+  background-color: rgb(98, 144, 237);
+  padding: 12px 18px;
+  color: white;
 }
 
-.brand_title {
+.brand_title a {
   text-transform: uppercase;
+  text-decoration: none;
 }
 
-.user_name {
-  margin-left: auto;
-  margin-right: 8px;
-}
-.register_btn {
-  margin-left: auto;
-  margin-right: 8px;
-}
-.register_btn:hover,
-.login_btn:hover {
-  color: rgb(17, 176, 44);
+.user_icon {
   cursor: pointer;
+}
+
+.write_poem {
+  background-color: navy;
+  padding: 6px 8px;
+  color: white;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 24px;
+}
+.write_poem a span {
+  font-weight: 800;
+  margin-right: 8px;
+}
+.write_poem a {
+  color: white;
+  margin-left: 8px;
+  text-decoration: none;
 }
