@@ -1,8 +1,15 @@
+:root {
+  --color_black: #1b1717;
+  --color_maroon_dark: #630000;
+  --color_maroon_light: #810000;
+  --color_beige: #eeebdd;
+}
+
 * {
   margin: 0;
   padding: 0;
 }
 
 body {
-  background-color: rgb(85, 85, 85);
+  background-color: var(--color_beige);
 }

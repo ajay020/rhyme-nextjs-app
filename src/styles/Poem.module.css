@@ -1,6 +1,6 @@
 .poem {
-  border: 1px solid black;
-  padding: 0.5rem;
+  border: 1px solid var(--color_maroon_light);
+  padding: 0.5rem 0;
   text-decoration: none;
   color: unset;
   width: 400px;
@@ -8,13 +8,10 @@
   background-color: rgb(255, 255, 255);
 }
 
-.poem_body {
-  /* background-color: beige; */
-}
-
 .poem_body h3 {
   margin: 4px 0;
   text-transform: capitalize;
+  color: var(--color_maroon_light);
 }
 
 .poem_body p {

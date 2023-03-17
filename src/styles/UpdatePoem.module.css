@@ -1,0 +1,45 @@
+.container {
+  background-color: white;
+  width: 480px;
+  margin: 12px auto;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.container h3 {
+  color: var(--color_maroon_light);
+  text-align: center;
+  margin: 12px 0;
+}
+
+.form_group {
+  margin: 12px 0;
+  /* box-sizing: border-box; */
+}
+
+.form_group input {
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  font-weight: bold;
+  font-size: large;
+  border: 1px solid gray;
+  border-color: var(--color_maroon_light);
+}
+
+.form_group textarea {
+  width: 100%;
+  font-size: large;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  border-color: var(--color_maroon_light);
+}
+
+.form_group button {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: large;
+  color: var(--color_beige);
+  border: none;
+  background-color: var(--color_maroon_light);
+}

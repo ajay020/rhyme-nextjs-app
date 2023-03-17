@@ -1,12 +1,14 @@
+import { useContext } from "react";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { ParsedUrlQuery } from "querystring";
 
 import { useRouter } from "next/router";
 import { PoemType } from "@/model/Types";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import styles from "../../styles/SinglePoem.module.css";
+import { AuthContext } from "../../components/AuthProvider";
 
 const BASE_URL = "http://localhost:8000";
 
@@ -16,6 +18,7 @@ interface Props {
 
 export default function SinglePoem({ poem }: Props) {
   const router = useRouter();
+  const { user } = useContext(AuthContext);
 
   if (router.isFallback) {
     return <div>Loading...</div>;
@@ -48,21 +51,25 @@ export default function SinglePoem({ poem }: Props) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-      <div className={styles.actions}>
-          <a href={`/update-poem/${poem._id}`} className={styles.btn}>
-            <FontAwesomeIcon
-             style={{ fontSize: 14, color: "black" }}
-             icon={faEdit} />
-          </a>
-          <a href="#" onClick={deletePoem} className={styles.btn}>
-            <FontAwesomeIcon
-              icon={faTrash}
-              style={{ fontSize: 14, color: "black" }}
-            />
-          </a>
-        </div>
+        {user?._id == poem.author?._id && (
+          <div className={styles.actions}>
+            <a href={`/update-poem/${poem._id}`} className={styles.btn}>
+              <FontAwesomeIcon
+                style={{ fontSize: 14, color: "black" }}
+                icon={faEdit}
+              />
+            </a>
+            <a href="#" onClick={deletePoem} className={styles.btn}>
+              <FontAwesomeIcon
+                icon={faTrash}
+                style={{ fontSize: 14, color: "black" }}
+              />
+            </a>
+          </div>
+        )}
+
         <h3>{poem.title}</h3>
-        <p>{poem?.author?.name}</p>
+        <p>~{poem?.author?.name}</p>
       </div>
 
       <div className={styles.body}>

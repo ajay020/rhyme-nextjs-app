@@ -18,12 +18,12 @@ export default function Navbar() {
   return (
     <nav className={styles.navbar}>
       <ul>
-        <li>
+        <li className={styles.brand}>
           <a href="/">Rhyme</a>
         </li>
         {!user && (
           <li className={styles.register_link}>
-            <a href={BASE_URL + "/api/register"}>Register</a>
+            <a href={"/register"}>Register</a>
           </li>
         )}
 
@@ -34,19 +34,13 @@ export default function Navbar() {
               <div className={styles.write_poem}>
                 <a href="/write_poem">
                   <span>Write</span>
-                  <FontAwesomeIcon
-                    icon={faAdd}
-                    style={{ fontSize: 14, color: "white" }}
-                  />
+                  <FontAwesomeIcon icon={faAdd} style={{ fontSize: 14 }} />
                 </a>
               </div>
             </li>
             <li>
               <div className={styles.user_icon} onClick={handleUserIconClick}>
-                <FontAwesomeIcon
-                  icon={faUser}
-                  style={{ fontSize: 14, color: "white" }}
-                />
+                <FontAwesomeIcon icon={faUser} style={{ fontSize: 14 }} />
               </div>
             </li>
           </>

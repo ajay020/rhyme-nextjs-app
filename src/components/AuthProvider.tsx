@@ -7,15 +7,20 @@ interface Props {
   children: React.ReactNode;
 }
 
-type UserType = {
+type BaseUser = {
+  _id: string;
   name: string;
   email: string;
-  token:string 
+  password: string;
+};
+
+type LocalUser = BaseUser & {
+  token: string;
 };
 
 interface ContextType {
-  user: UserType | null;
-  register: (data: UserType) => void;
+  user: LocalUser | null;
+  register: (data: BaseUser) => void;
   login: (email: string, password: string) => void;
   logout: () => void;
   loading: boolean;
@@ -32,7 +37,7 @@ export const AuthContext = createContext<ContextType>({
 });
 
 export function AuthProvider({ children }: Props) {
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<LocalUser | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -42,11 +47,10 @@ export function AuthProvider({ children }: Props) {
     const user = JSON.parse(localStorage.getItem("user") || "null");
     if (user) {
       setUser(user);
-      //   setIsLoggedIn(true);
     }
   }, []);
 
-  const register = async (userData: UserType) => {
+  const register = async (userData: BaseUser) => {
     setLoading(true);
     try {
       const { user, token } = await registerUser(userData);
@@ -102,7 +106,7 @@ export function AuthProvider({ children }: Props) {
   );
 }
 
-async function registerUser(userData: UserType) {
+async function registerUser(userData: BaseUser) {
   const response = await fetch(BASE_URL + "/api/auth/signup", {
     method: "post",
     headers: {

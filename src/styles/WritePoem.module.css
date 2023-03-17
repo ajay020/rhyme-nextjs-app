@@ -1,12 +1,13 @@
 .write_poem {
-  background-color: aquamarine;
-  width: 500px;
+  background-color: white;
+  width: 480px;
   margin: 8px auto;
   padding: 4px;
+  box-sizing: border-box;
 }
 
 .form_group {
-  margin: 8px;
+  margin: 12px 8px;
 }
 
 .form_group input {
@@ -14,15 +15,26 @@
   box-sizing: border-box;
   padding: 8px;
   outline: none;
+  font-size: large;
+  border: 1px solid gray;
+  border-color: var(--color_maroon_light);
 }
 
 .form_group textarea {
+  box-sizing: border-box;
   outline: none;
+  font-size: large;
+  font-weight: 500;
   width: 100%;
-  padding: 2px 4px;
+  padding: 8px 8px;
+  border-color: var(--color_maroon_light);
 }
 
 .form_group button {
-  padding: 4px;
+  padding: 8px 16px;
   cursor: pointer;
+  background-color: var(--color_maroon_light);
+  color: var(--color_beige);
+  font-size: large;
+  border: none;
 }
