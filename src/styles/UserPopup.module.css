@@ -13,7 +13,6 @@
   flex-direction: column;
   align-items: start;
   list-style-type: none;
-  /* background-color: aqua; */
 }
 
 .user_popup ul li {
@@ -34,5 +33,16 @@
 }
 
 .user_popup ul li:hover {
-  background-color: lightgray;
+  background-color: var(--color_maroon_light);
+  color: var(--color_beige);
+  transition: 0.5s ease-in;
+}
+
+.user_info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.icons {
+  color: red;
 }

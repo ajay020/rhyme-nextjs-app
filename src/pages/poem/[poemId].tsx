@@ -48,6 +48,8 @@ export default function SinglePoem({ poem }: Props) {
     }
   };
 
+  console.log(user?._id, poem.author?._id);
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>

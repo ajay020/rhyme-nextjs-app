@@ -1,6 +1,8 @@
 import styles from "../styles/UserPopup.module.css";
 import { useContext } from "react";
 import { AuthContext } from "./AuthProvider";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSignOut, faUser } from "@fortawesome/free-solid-svg-icons";
 
 type User = {
   name: string;
@@ -18,12 +20,19 @@ function UserPopup({ user }: Props) {
   return (
     <div className={styles.user_popup}>
       <ul>
-        <li>
-          <p>{user?.name}</p>
-          <p>{user?.email}</p>
+        <li className={styles.user_info}>
+          <FontAwesomeIcon icon={faUser} />
+          <div>
+            <p>{user?.name}</p>
+            <p>{user?.email}</p>
+          </div>
         </li>
+        <hr />
         <li className={styles.logout_btn}>
-          <p onClick={() => logout()}>Logout</p>
+          <p onClick={() => logout()}>
+            <FontAwesomeIcon icon={faSignOut} style={{ fontSize: 16 }} />
+            <span> Logout</span>
+          </p>
         </li>
       </ul>
     </div>

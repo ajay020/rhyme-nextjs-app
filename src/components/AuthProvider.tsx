@@ -8,13 +8,13 @@ interface Props {
 }
 
 type BaseUser = {
-  _id: string;
   name: string;
   email: string;
   password: string;
 };
 
 type LocalUser = BaseUser & {
+  _id: string;
   token: string;
 };
 

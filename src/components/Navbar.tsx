@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "./AuthProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faUser } from "@fortawesome/free-solid-svg-icons";
@@ -14,6 +14,28 @@ export default function Navbar() {
   const handleUserIconClick = () => {
     setVisible(!visible);
   };
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      const dialog = document.querySelector(".dialog");
+      const userIcon = document.querySelector(".user");
+
+      if (
+        dialog &&
+        !dialog.contains(event.target as Node) &&
+        event.target !== userIcon &&
+        !userIcon?.contains(event.target as Node)
+      ) {
+        setVisible(false);
+      }
+    }
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className={styles.navbar}>
@@ -38,15 +60,21 @@ export default function Navbar() {
                 </a>
               </div>
             </li>
-            <li>
+            <li className="user">
               <div className={styles.user_icon} onClick={handleUserIconClick}>
-                <FontAwesomeIcon icon={faUser} style={{ fontSize: 14 }} />
+                <FontAwesomeIcon
+                  id="userIcon"
+                  icon={faUser}
+                  style={{ fontSize: 18 }}
+                />
               </div>
             </li>
           </>
         )}
       </ul>
-      {visible && user && <UserPopup user={user} />}
+      <div className="dialog">
+        {visible && user && <UserPopup user={user} />}
+      </div>
     </nav>
   );
 }
