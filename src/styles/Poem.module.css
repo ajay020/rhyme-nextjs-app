@@ -3,9 +3,13 @@
   padding: 0.5rem 0;
   text-decoration: none;
   color: unset;
-  width: 400px;
+  width: 340px;
   text-align: center;
   background-color: rgb(255, 255, 255);
+}
+
+.poem:hover {
+  background-color: var(--color_beige);
 }
 
 .poem_body h3 {
@@ -18,4 +22,31 @@
   padding: 0;
   margin: 2px 0;
   white-space: pre;
+}
+
+/* Media queries */
+
+@media screen and (min-width: 1200px) {
+  .poem {
+    width: 480px;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  /*Tablets [601px -> 1200px]*/
+  .poem {
+    width: 480px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  /*Big smartphones [426px -> 600px]*/
+  .poem {
+    width: 400px;
+  }
+}
+@media only screen and (max-width: 425px) {
+  /*Small smartphones [325px -> 425px]*/
+  .poem {
+    width: 320px;
+  }
 }

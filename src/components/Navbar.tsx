@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { AuthContext } from "./AuthProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faUser } from "@fortawesome/free-solid-svg-icons";
@@ -10,6 +10,13 @@ const BASE_URL = "http://localhost:8000";
 export default function Navbar() {
   const { user } = useContext(AuthContext);
   const [visible, setVisible] = useState(false);
+  const [dialogPosition, setDialogPosition] = useState({
+    top: 55,
+    right: 10,
+    left: 0,
+  });
+
+  const userIconRef = useRef<HTMLLIElement>(null);
 
   const handleUserIconClick = () => {
     setVisible(!visible);
@@ -17,12 +24,12 @@ export default function Navbar() {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      const dialog = document.querySelector(".dialog");
+      const dialogWrapper = document.querySelector("#dialogWrapper");
       const userIcon = document.querySelector(".user");
 
       if (
-        dialog &&
-        !dialog.contains(event.target as Node) &&
+        dialogWrapper &&
+        !dialogWrapper.contains(event.target as Node) &&
         event.target !== userIcon &&
         !userIcon?.contains(event.target as Node)
       ) {
@@ -30,10 +37,24 @@ export default function Navbar() {
       }
     }
 
+    function updateDialogPosition() {
+      if (userIconRef.current) {
+        const { top, left, right, width } =
+          userIconRef.current.getBoundingClientRect();
+        setDialogPosition({
+          top: top + width + 5,
+          right: right - width / 2,
+          left: left - width * 4,
+        });
+      }
+    }
+
+    window.addEventListener("resize", updateDialogPosition);
     document.addEventListener("click", handleClickOutside);
 
     return () => {
       document.removeEventListener("click", handleClickOutside);
+      window.removeEventListener("resize", updateDialogPosition);
     };
   }, []);
 
@@ -51,7 +72,6 @@ export default function Navbar() {
 
         {user && (
           <>
-            {" "}
             <li className={styles.write_link}>
               <div className={styles.write_poem}>
                 <a href="/write_poem">
@@ -60,7 +80,11 @@ export default function Navbar() {
                 </a>
               </div>
             </li>
-            <li className="user">
+            <li
+              style={{ background: "red" }}
+              className="user"
+              ref={userIconRef}
+            >
               <div className={styles.user_icon} onClick={handleUserIconClick}>
                 <FontAwesomeIcon
                   id="userIcon"
@@ -72,7 +96,15 @@ export default function Navbar() {
           </>
         )}
       </ul>
-      <div className="dialog">
+      <div
+        style={{
+          top: dialogPosition.top + "px",
+          //   right: dialogPosition.right + "px",
+          left: dialogPosition.left + "px",
+        }}
+        id="dialogWrapper"
+        className={styles.dialogWrapper}
+      >
         {visible && user && <UserPopup user={user} />}
       </div>
     </nav>

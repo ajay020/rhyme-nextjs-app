@@ -1,8 +1,8 @@
 .container {
   background-color: white;
-  width: 400px;
+  width: 340px;
   margin: 8px auto;
-  padding: 1rem;
+  box-sizing: border-box;
 }
 
 .header {
@@ -34,4 +34,38 @@
   margin: 18px auto;
   text-align: center;
   white-space: pre;
+}
+
+@media only screen and (min-width: 1200px) {
+  /*Tablets [601px -> 1200px]*/
+  .container {
+    width: 500px;
+    margin: 8px auto;
+    padding: 1rem;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  /*Tablets [601px -> 1200px]*/
+  .container {
+    width: 480px;
+    margin: 8px auto;
+    padding: 1rem;
+  }
+}
+@media only screen and (max-width: 600px) {
+  /*Big smartphones [426px -> 600px]*/
+  .container {
+    width: 440px;
+    margin: 8px auto;
+    padding: 12px 16px;
+  }
+}
+@media only screen and (max-width: 425px) {
+  /*Small smartphones [325px -> 425px]*/
+  .container {
+    width: 340px;
+    margin: 8px auto;
+    padding: 0.5rem 2px;
+  }
 }

@@ -46,6 +46,7 @@ export default function WritePoem() {
 
   return (
     <div className={styles.write_poem}>
+      <h3>Write A Poem</h3>
       <form onSubmit={submitPoem}>
         <div className={styles.form_group}>
           <input

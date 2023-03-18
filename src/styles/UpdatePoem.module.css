@@ -43,3 +43,35 @@
   border: none;
   background-color: var(--color_maroon_light);
 }
+
+@media screen and (min-width: 1200px) {
+  .container {
+    width: 600px;
+    padding: 8px 8px;
+  }
+  .form_group input {
+    padding: 12px 8px;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  /*Tablets [601px -> 1200px]*/
+  .container {
+    width: 480px;
+    padding: 8px 12px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  /*Big smartphones [426px -> 600px]*/
+  .container {
+    width: 380px;
+    padding: 8px 8px;
+  }
+}
+@media only screen and (max-width: 425px) {
+  /*Small smartphones [325px -> 425px]*/
+  .container {
+    width: 340px;
+    padding: 8px 8px;
+  }
+}

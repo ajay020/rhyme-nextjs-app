@@ -1,9 +1,15 @@
 .write_poem {
   background-color: white;
   width: 480px;
-  margin: 8px auto;
+  margin: 12px auto;
   padding: 4px;
   box-sizing: border-box;
+}
+
+.write_poem h3 {
+  text-align: center;
+  margin: 8px auto;
+  color: var(--color_maroon_light);
 }
 
 .form_group {
@@ -37,4 +43,38 @@
   color: var(--color_beige);
   font-size: large;
   border: none;
+}
+
+@media only screen and (min-width: 1200px) {
+  /*Desktops [   > 1200px ]*/
+  .write_poem {
+    background-color: white;
+    width: 600px;
+    padding: 6px 4px;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  /*Tablets [601px -> 1200px]*/
+  .write_poem {
+    background-color: white;
+    width: 540px;
+    padding: 6px 6px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  /*Big smartphones [426px -> 600px]*/
+  .write_poem {
+    background-color: white;
+    width: 400px;
+    padding: 6px 4px;
+  }
+}
+@media only screen and (max-width: 425px) {
+  /*Small smartphones [325px -> 425px]*/
+  .write_poem {
+    background-color: white;
+    width: 330px;
+    padding: 6px 4px;
+  }
 }

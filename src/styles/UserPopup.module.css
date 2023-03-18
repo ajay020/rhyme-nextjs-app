@@ -1,10 +1,7 @@
 .user_popup {
-  position: absolute;
-  top: 50px;
-  right: 10px;
   width: 200px;
   color: black;
-  padding: 12px;
+  padding: 12px 0;
   background-color: white;
 }
 
@@ -13,11 +10,12 @@
   flex-direction: column;
   align-items: start;
   list-style-type: none;
+  box-sizing: border-box;
 }
 
 .user_popup ul li {
   text-align: left;
-  padding: 8px 8px;
+  padding: 8px 18px;
   margin: 4px 0;
   width: 100%;
   box-sizing: border-box;
@@ -33,16 +31,14 @@
 }
 
 .user_popup ul li:hover {
-  background-color: var(--color_maroon_light);
-  color: var(--color_beige);
-  transition: 0.5s ease-in;
+  background-color: var(--color_beige);
+  color: var(--color_maroon_light);
+  transition: 0.2s ease-in;
 }
 
 .user_info {
   display: flex;
   align-items: center;
-  gap: 4px;
-}
-.icons {
-  color: red;
+  flex-wrap: nowrap;
+  gap: 8px;
 }
