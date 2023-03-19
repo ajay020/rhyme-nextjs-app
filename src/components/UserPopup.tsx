@@ -27,7 +27,7 @@ function UserPopup({ user }: Props) {
             <p>{user?.email}</p>
           </div>
         </li>
-        <hr />
+        <hr style={{ color: "gray", width: "100%" }} />
         <li className={styles.logout_btn}>
           <p onClick={() => logout()}>
             <FontAwesomeIcon icon={faSignOut} style={{ fontSize: 16 }} />
