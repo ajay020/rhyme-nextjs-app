@@ -1,7 +1,11 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { AuthContext } from "./AuthProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAdd, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAdd,
+  faFeatherPointed,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import styles from "../styles/Navbar.module.css";
 import UserPopup from "./UserPopup";
 
@@ -12,8 +16,8 @@ export default function Navbar() {
   const [visible, setVisible] = useState(false);
   const [dialogPosition, setDialogPosition] = useState({
     top: 55,
-    right: 10,
     left: 0,
+    right: 10,
   });
 
   const userIconRef = useRef<HTMLLIElement>(null);
@@ -39,15 +43,17 @@ export default function Navbar() {
 
     function updateDialogPosition() {
       if (userIconRef.current) {
-        const { top, left, right, width } =
+        const { top, left, width } =
           userIconRef.current.getBoundingClientRect();
         setDialogPosition({
           top: top + width + 5,
-          right: right - width / 2,
           left: left - width * 4,
+          right: left,
         });
       }
     }
+
+    updateDialogPosition();
 
     window.addEventListener("resize", updateDialogPosition);
     document.addEventListener("click", handleClickOutside);
@@ -56,12 +62,17 @@ export default function Navbar() {
       document.removeEventListener("click", handleClickOutside);
       window.removeEventListener("resize", updateDialogPosition);
     };
-  }, []);
+  }, [visible]);
 
   return (
     <nav className={styles.navbar}>
       <ul>
         <li className={styles.brand}>
+          <FontAwesomeIcon
+            className={styles.logo}
+            icon={faFeatherPointed}
+            style={{ fontSize: 22 }}
+          />
           <a href="/">Rhyme</a>
         </li>
         {!user && (
@@ -80,11 +91,7 @@ export default function Navbar() {
                 </a>
               </div>
             </li>
-            <li
-              style={{ background: "red" }}
-              className="user"
-              ref={userIconRef}
-            >
+            <li className="user" ref={userIconRef}>
               <div className={styles.user_icon} onClick={handleUserIconClick}>
                 <FontAwesomeIcon
                   id="userIcon"
@@ -99,8 +106,8 @@ export default function Navbar() {
       <div
         style={{
           top: dialogPosition.top + "px",
-          //   right: dialogPosition.right + "px",
           left: dialogPosition.left + "px",
+          right: dialogPosition.right + "px",
         }}
         id="dialogWrapper"
         className={styles.dialogWrapper}
