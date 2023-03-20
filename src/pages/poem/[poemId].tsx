@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../../styles/SinglePoem.module.css";
 import { AuthContext } from "../../components/AuthProvider";
 import { BASE_URL } from "@/common/config";
+import Link from "next/link";
 
 interface Props {
   poem: PoemType;
@@ -47,25 +48,27 @@ export default function SinglePoem({ poem }: Props) {
     }
   };
 
-  console.log(user?._id, poem.author?._id);
-
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         {user?._id == poem.author?._id && (
           <div className={styles.actions}>
-            <a href={`/update-poem/${poem._id}`} className={styles.btn}>
-              <FontAwesomeIcon
-                style={{ fontSize: 14, color: "black" }}
-                icon={faEdit}
-              />
-            </a>
-            <a href="#" onClick={deletePoem} className={styles.btn}>
-              <FontAwesomeIcon
-                icon={faTrash}
-                style={{ fontSize: 14, color: "black" }}
-              />
-            </a>
+            <Link href={`/update-poem/${poem._id}`} legacyBehavior>
+              <a className={styles.btn}>
+                <FontAwesomeIcon
+                  style={{ fontSize: 14, color: "black" }}
+                  icon={faEdit}
+                />
+              </a>
+            </Link>
+            <Link href="#" legacyBehavior>
+              <a onClick={deletePoem} className={styles.btn}>
+                <FontAwesomeIcon
+                  icon={faTrash}
+                  style={{ fontSize: 14, color: "black" }}
+                />
+              </a>
+            </Link>
           </div>
         )}
 

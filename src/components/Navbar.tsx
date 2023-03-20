@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "../styles/Navbar.module.css";
 import UserPopup from "./UserPopup";
+import Link from "next/link";
 
 const BASE_URL = "http://localhost:8000";
 
@@ -73,11 +74,15 @@ export default function Navbar() {
             icon={faFeatherPointed}
             style={{ fontSize: 22 }}
           />
-          <a href="/">Rhyme</a>
+          <Link href="/" legacyBehavior>
+            <a>Rhyme</a>
+          </Link>
         </li>
         {!user && (
           <li className={styles.register_link}>
-            <a href={"/register"}>Register</a>
+            <Link href={"/register"} legacyBehavior>
+              <a>Register</a>
+            </Link>
           </li>
         )}
 
@@ -85,10 +90,12 @@ export default function Navbar() {
           <>
             <li className={styles.write_link}>
               <div className={styles.write_poem}>
-                <a href="/write_poem">
-                  <span>Write</span>
-                  <FontAwesomeIcon icon={faAdd} style={{ fontSize: 14 }} />
-                </a>
+                <Link href="/write_poem" legacyBehavior>
+                  <a>
+                    <span>Write</span>
+                    <FontAwesomeIcon icon={faAdd} style={{ fontSize: 14 }} />
+                  </a>
+                </Link>
               </div>
             </li>
             <li className="user" ref={userIconRef}>
