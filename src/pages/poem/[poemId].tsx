@@ -9,8 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import styles from "../../styles/SinglePoem.module.css";
 import { AuthContext } from "../../components/AuthProvider";
-
-const BASE_URL = "http://localhost:8000";
+import { BASE_URL } from "@/common/config";
 
 interface Props {
   poem: PoemType;

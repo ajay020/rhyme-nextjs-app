@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { PoemType } from "@/model/Types";
 import { Poem } from "@/components/Poem";
 import styles from "@/styles/Home.module.css";
+import { BASE_URL } from "@/common/config";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,8 @@ export default function Home({ poems }: PropTypes) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
+        {poems.length == 0 && <h2>No Poem found, Write one.</h2>}
+
         {poems.map((poem) => (
           <Poem poem={poem} key={poem._id} />
         ))}
@@ -29,11 +32,14 @@ export default function Home({ poems }: PropTypes) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch("http://localhost:8000/api/poem/");
+  let poems = [];
+  try {
+    const res = await fetch(BASE_URL + "/api/poem/");
 
-  const poems = await res.json();
-
-  // console.log(poems);
+    poems = await res.json();
+  } catch (error: any) {
+    console.log(error);
+  }
 
   return { props: { poems } };
 }

@@ -1,8 +1,7 @@
 import styles from "../styles/WritePoem.module.css";
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/router";
-
-const BASE_URL = "http://localhost:8000";
+import { BASE_URL } from "@/common/config";
 
 interface UserData {
   name: string;

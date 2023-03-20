@@ -1,7 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-
-const BASE_URL = "http://localhost:8000";
+import { BASE_URL } from "@/common/config";
 
 interface Props {
   children: React.ReactNode;
