@@ -1,6 +1,7 @@
 import { FormEvent, useState, useContext } from "react";
 import styles from "../styles/Register.module.css";
 import { AuthContext } from "../components/AuthProvider";
+import Link from "next/link";
 
 function RegisterForm() {
   const [name, setName] = useState<string>("");
@@ -50,7 +51,10 @@ function RegisterForm() {
       </form>
       <div className={styles.already_section}>
         <p>
-          Already SignedUp? <a href="/login">Login</a>
+          Already SignedUp?{" "}
+          <Link href="/login">
+            <a>Login</a>
+          </Link>
         </p>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { useState, FormEvent, useContext } from "react";
 import styles from "../styles/Register.module.css";
 import { AuthContext } from "../components/AuthProvider";
+import Link from "next/link";
 
 function LoginForm() {
   const [email, setEmail] = useState<string>("");
@@ -41,7 +42,10 @@ function LoginForm() {
       </form>
       <div className={styles.already_section}>
         <p>
-          Not a member? <a href="/register">SignUp</a>
+          Not a member?{" "}
+          <Link href="/register">
+            <a>SignUp</a>
+          </Link>
         </p>
       </div>
     </div>
