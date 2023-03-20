@@ -42,10 +42,7 @@ function LoginForm() {
       </form>
       <div className={styles.already_section}>
         <p>
-          Not a member?{" "}
-          <Link href="/register">
-            <a>SignUp</a>
-          </Link>
+          Not a member? <Link href="/register">SignUp</Link>
         </p>
       </div>
     </div>

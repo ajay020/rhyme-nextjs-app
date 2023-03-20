@@ -51,10 +51,7 @@ function RegisterForm() {
       </form>
       <div className={styles.already_section}>
         <p>
-          Already SignedUp?{" "}
-          <Link href="/login">
-            <a>Login</a>
-          </Link>
+          Already SignedUp? <Link href="/login">Login</Link>
         </p>
       </div>
     </div>
