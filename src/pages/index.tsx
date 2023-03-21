@@ -31,10 +31,10 @@ export default function Home({ poems }: PropTypes) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   let poems = [];
   try {
-    const res = await fetch(BASE_URL + "/api/poem/");
+    const res = await fetch(BASE_URL + "/api/poem");
 
     poems = await res.json();
   } catch (error: any) {
