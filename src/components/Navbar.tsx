@@ -74,15 +74,11 @@ export default function Navbar() {
             icon={faFeatherPointed}
             style={{ fontSize: 22 }}
           />
-          <Link href="/" legacyBehavior>
-            <a>Rhyme</a>
-          </Link>
+          <Link href="/">Rhyme</Link>
         </li>
         {!user && (
           <li className={styles.register_link}>
-            <Link href={"/register"} legacyBehavior>
-              <a>Register</a>
-            </Link>
+            <Link href={"/register"}>Register</Link>
           </li>
         )}
 
@@ -90,11 +86,9 @@ export default function Navbar() {
           <>
             <li className={styles.write_link}>
               <div className={styles.write_poem}>
-                <Link href="/write_poem" legacyBehavior>
-                  <a>
-                    <span>Write</span>
-                    <FontAwesomeIcon icon={faAdd} style={{ fontSize: 14 }} />
-                  </a>
+                <Link href="/write_poem">
+                  <span>Write</span>
+                  <FontAwesomeIcon icon={faAdd} style={{ fontSize: 14 }} />
                 </Link>
               </div>
             </li>

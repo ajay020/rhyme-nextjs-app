@@ -8,13 +8,11 @@ type PropType = {
 
 export function Poem({ poem }: PropType) {
   return (
-    <Link href={"/poem/" + poem._id} legacyBehavior>
-      <a className={styles.poem}>
-        <div className={styles.poem_body}>
-          <h3>{poem.title}</h3>
-          <p>{`${poem.description.substring(0, 60)}...`}</p>
-        </div>
-      </a>
+    <Link className={styles.poem} href={"/poem/" + poem._id}>
+      <div className={styles.poem_body}>
+        <h3>{poem.title}</h3>
+        <p>{`${poem.description.substring(0, 60)}...`}</p>
+      </div>
     </Link>
   );
 }
