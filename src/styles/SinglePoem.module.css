@@ -21,9 +21,8 @@
 }
 
 .actions {
-  /* background-color: antiquewhite; */
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .actions .btn {
