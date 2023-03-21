@@ -4,11 +4,11 @@ import { PoemType } from "@/model/Types";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { ParsedUrlQuery } from "querystring";
 import styles from "../../styles/UpdatePoem.module.css";
+import { BASE_URL } from "@/common/config";
 
 interface Props {
   poem: PoemType;
 }
-const BASE_URL = "http://localhost:8000";
 
 export default function UpdatePoem({ poem }: Props) {
   const [title, setTitle] = useState(poem?.title || "");
@@ -79,18 +79,23 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 }: GetServerSidePropsContext<ParsedUrlQuery>) => {
   let poemId: string | undefined;
 
-  if (params && typeof params.poemId == "string") {
-    poemId = params.poemId;
-  }
+  let poem;
 
-  if (!poemId) {
-    return {
-      notFound: true,
-    };
-  }
+  try {
+    if (params && typeof params.poemId == "string") {
+      poemId = params.poemId;
+    }
 
-  const response = await fetch(BASE_URL + `/api/poem/${poemId}`);
-  const poem = await response.json();
+    if (!poemId) {
+      return {
+        notFound: true,
+      };
+    }
+    const response = await fetch(BASE_URL + `/api/poem/${poemId}`);
+    poem = await response.json();
+  } catch (error: any) {
+    console.log(error.message);
+  }
 
   // Pass the post data as props to the component
   return {

@@ -30,7 +30,6 @@ export default function SinglePoem({ poem }: Props) {
       let user;
       if (userString) {
         user = JSON.parse(userString);
-        console.log(user);
       }
 
       const response = await fetch(BASE_URL + `/api/poem/${poem._id}`, {
@@ -53,26 +52,22 @@ export default function SinglePoem({ poem }: Props) {
       <div className={styles.header}>
         {user?._id == poem.author?._id && (
           <div className={styles.actions}>
-            <Link href={`/update-poem/${poem._id}`} legacyBehavior>
-              <a className={styles.btn}>
-                <FontAwesomeIcon
-                  style={{ fontSize: 14, color: "black" }}
-                  icon={faEdit}
-                />
-              </a>
+            <Link className={styles.btn} href={`/update-poem/${poem._id}`}>
+              <FontAwesomeIcon
+                style={{ fontSize: 14, color: "black" }}
+                icon={faEdit}
+              />
             </Link>
-            <Link href="#" legacyBehavior>
-              <a onClick={deletePoem} className={styles.btn}>
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  style={{ fontSize: 14, color: "black" }}
-                />
-              </a>
+            <Link className={styles.btn} onClick={deletePoem} href="#">
+              <FontAwesomeIcon
+                icon={faTrash}
+                style={{ fontSize: 14, color: "black" }}
+              />
             </Link>
           </div>
         )}
 
-        <h3>{poem.title}</h3>
+        <h3>{poem?.title}</h3>
         <p>~{poem?.author?.name}</p>
       </div>
 
@@ -100,8 +95,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 
   const response = await fetch(BASE_URL + `/api/poem/${poemId}`);
   const poem = await response.json();
-
-  // console.log(poem);
 
   // Pass the post data as props to the component
   return {
