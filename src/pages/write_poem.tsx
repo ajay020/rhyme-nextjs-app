@@ -2,6 +2,7 @@ import styles from "../styles/WritePoem.module.css";
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/router";
 import { BASE_URL } from "@/common/config";
+import Spinner from "@/components/Spinner";
 
 interface UserData {
   name: string;
@@ -11,6 +12,7 @@ interface UserData {
 
 export default function WritePoem() {
   const [title, setTitle] = useState("");
+  const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
   const router = useRouter();
 
@@ -26,6 +28,7 @@ export default function WritePoem() {
 
     try {
       if (title && description && user) {
+        setLoading(true);
         const poem = { title, description };
         const response = await fetch(BASE_URL + "/api/poem", {
           method: "post",
@@ -40,12 +43,15 @@ export default function WritePoem() {
       }
     } catch (error: any) {
       console.log(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className={styles.write_poem}>
       <h3>Write A Poem</h3>
+      <Spinner loading={loading} />
       <form onSubmit={submitPoem}>
         <div className={styles.form_group}>
           <input

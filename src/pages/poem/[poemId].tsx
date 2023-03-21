@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { ParsedUrlQuery } from "querystring";
 
@@ -11,12 +11,14 @@ import styles from "../../styles/SinglePoem.module.css";
 import { AuthContext } from "../../components/AuthProvider";
 import { BASE_URL } from "@/common/config";
 import Link from "next/link";
+import Spinner from "@/components/Spinner";
 
 interface Props {
   poem: PoemType;
 }
 
 export default function SinglePoem({ poem }: Props) {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { user } = useContext(AuthContext);
 
@@ -26,6 +28,7 @@ export default function SinglePoem({ poem }: Props) {
 
   const deletePoem = async () => {
     try {
+      setLoading(true);
       const userString = localStorage.getItem("user");
       let user;
       if (userString) {
@@ -49,6 +52,7 @@ export default function SinglePoem({ poem }: Props) {
 
   return (
     <div className={styles.container}>
+      <Spinner loading={loading} />
       <div className={styles.header}>
         {user?._id == poem.author?._id && (
           <div className={styles.actions}>

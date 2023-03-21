@@ -52,10 +52,13 @@ export function AuthProvider({ children }: Props) {
   const register = async (userData: BaseUser) => {
     setLoading(true);
     try {
-      const { user, token } = await registerUser(userData);
-      setUser(user);
-      localStorage.setItem("user", JSON.stringify({ ...user, token }));
-      router.push("/");
+      const response = await registerUser(userData);
+      if (response) {
+        const { user, token } = response as { user: LocalUser; token: string };
+        setUser(user);
+        localStorage.setItem("user", JSON.stringify({ ...user, token }));
+        router.push("/");
+      }
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -67,8 +70,10 @@ export function AuthProvider({ children }: Props) {
     setLoading(true);
 
     try {
-      const { user, token } = await loginUser(email, password);
-      if (token) {
+      const response = await loginUser(email, password);
+      if (response) {
+        const { user, token } = response as { user: LocalUser; token: string };
+
         // set the user in state
         setUser(user);
 
@@ -106,31 +111,66 @@ export function AuthProvider({ children }: Props) {
 }
 
 async function registerUser(userData: BaseUser) {
-  const response = await fetch(BASE_URL + "/api/auth/signup", {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userData),
-  });
+  try {
+    const paramObj = {
+      url: BASE_URL + "/api/auth/signup",
+      method: "POST",
+      body: JSON.stringify(userData),
+    };
 
-  const {
-    data: { user },
-    token,
-  } = await response.json();
-  return { user, token };
+    const userResponse = await callAPI(paramObj);
+    if (userResponse) {
+      const {
+        data: { user },
+        token,
+      } = userResponse;
+      return { user, token };
+    }
+  } catch (error: any) {
+    alert(error.message);
+    console.log(error.message);
+  }
 }
 
 async function loginUser(email: string, password: string) {
-  const response = await fetch(BASE_URL + "/api/auth/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
+  try {
+    const paramObj = {
+      url: BASE_URL + "/api/auth/login",
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    };
 
-  const {
-    data: { user },
-    token,
-  } = await response.json();
-  return { user, token };
+    const userResponse = await callAPI(paramObj);
+    if (userResponse) {
+      const {
+        data: { user },
+        token,
+      } = userResponse;
+      return { user, token };
+    }
+  } catch (error: any) {
+    alert(error.message);
+    console.log(error.message);
+  }
+}
+
+async function callAPI(paramObj: {
+  url: string;
+  method: string;
+  body: string;
+}): Promise<any | undefined> {
+  try {
+    const response = await fetch(paramObj.url, {
+      method: paramObj.method,
+      headers: { "Content-Type": "application/json" },
+      body: paramObj.body,
+    });
+
+    const userResponse = await response.json();
+
+    return userResponse;
+  } catch (error: any) {
+    alert(error.message);
+    console.log(error.message);
+  }
 }

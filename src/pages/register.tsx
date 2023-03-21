@@ -2,6 +2,7 @@ import { FormEvent, useState, useContext } from "react";
 import styles from "../styles/Register.module.css";
 import { AuthContext } from "../components/AuthProvider";
 import Link from "next/link";
+import Spinner from "@/components/Spinner";
 
 function RegisterForm() {
   const [name, setName] = useState<string>("");
@@ -21,7 +22,7 @@ function RegisterForm() {
   return (
     <div className={styles.register}>
       <h2>SignUp Form</h2>
-      {loading && <h3>Loading... </h3>}
+      {loading && <Spinner loading={loading} />}
       <form onSubmit={registerUser}>
         {error && <div>{error}</div>}
         <div className={styles.form_group}>

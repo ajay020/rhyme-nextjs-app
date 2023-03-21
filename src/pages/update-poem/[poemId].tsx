@@ -5,6 +5,7 @@ import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { ParsedUrlQuery } from "querystring";
 import styles from "../../styles/UpdatePoem.module.css";
 import { BASE_URL } from "@/common/config";
+import Spinner from "@/components/Spinner";
 
 interface Props {
   poem: PoemType;
@@ -13,6 +14,7 @@ interface Props {
 export default function UpdatePoem({ poem }: Props) {
   const [title, setTitle] = useState(poem?.title || "");
   const [description, setDescription] = useState(poem?.description || "");
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -27,6 +29,7 @@ export default function UpdatePoem({ poem }: Props) {
       }
 
       if (title && description) {
+        setLoading(true);
         const response = await fetch(BASE_URL + `/api/poem/${poem._id}`, {
           method: "PUT",
           headers: {
@@ -41,12 +44,15 @@ export default function UpdatePoem({ poem }: Props) {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className={styles.container}>
       <h3>Update Poem</h3>
+      <Spinner loading={loading} />
       <form onSubmit={updatePoem}>
         <div className={styles.form_group}>
           <input
