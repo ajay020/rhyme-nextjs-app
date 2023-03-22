@@ -23,7 +23,7 @@ export default function SinglePoem({ poem }: Props) {
   const { user } = useContext(AuthContext);
 
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return <Spinner loading={true} />;
   }
 
   const deletePoem = async () => {
@@ -86,19 +86,20 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   params,
 }: GetServerSidePropsContext<ParsedUrlQuery>) => {
   let poemId: string | undefined;
+  let poem;
+  try {
+    if (params && typeof params.poemId == "string") {
+      poemId = params.poemId;
+    }
 
-  if (params && typeof params.poemId == "string") {
-    poemId = params.poemId;
-  }
-
-  if (!poemId) {
-    return {
-      notFound: true,
-    };
-  }
-
-  const response = await fetch(BASE_URL + `/api/poem/${poemId}`);
-  const poem = await response.json();
+    if (!poemId) {
+      return {
+        notFound: true,
+      };
+    }
+    const response = await fetch(BASE_URL + `/api/poem/${poemId}`);
+    poem = await response.json();
+  } catch (error) {}
 
   // Pass the post data as props to the component
   return {
