@@ -1,17 +1,22 @@
+import { useState, useEffect } from "react";
 import Head from "next/head";
-import { Inter } from "next/font/google";
 import { PoemType } from "@/model/Types";
 import { Poem } from "@/components/Poem";
 import styles from "@/styles/Home.module.css";
 import { BASE_URL } from "@/common/config";
-
-const inter = Inter({ subsets: ["latin"] });
+import Spinner from "@/components/Spinner";
 
 type PropTypes = {
   poems: PoemType[];
 };
 
 export default function Home({ poems }: PropTypes) {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  });
+
   return (
     <>
       <Head>
@@ -21,6 +26,8 @@ export default function Home({ poems }: PropTypes) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
+        {loading && <Spinner loading={loading} />}
+
         {poems.length == 0 && <h2>No Poem found, Write one.</h2>}
 
         {poems.map((poem) => (
@@ -35,10 +42,9 @@ export async function getServerSideProps() {
   let poems = [];
   try {
     const res = await fetch(BASE_URL + "/api/poem");
-
     poems = await res.json();
   } catch (error: any) {
-    console.log(error);
+    console.log(error.message);
   }
 
   return { props: { poems } };
