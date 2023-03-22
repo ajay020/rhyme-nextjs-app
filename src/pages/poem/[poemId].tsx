@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { ParsedUrlQuery } from "querystring";
 
@@ -18,17 +18,16 @@ interface Props {
 }
 
 export default function SinglePoem({ poem }: Props) {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { user } = useContext(AuthContext);
 
-  if (router.isFallback) {
-    return <Spinner loading={true} />;
-  }
+  useEffect(() => {
+    setLoading(false);
+  });
 
   const deletePoem = async () => {
     try {
-      setLoading(true);
       const userString = localStorage.getItem("user");
       let user;
       if (userString) {
