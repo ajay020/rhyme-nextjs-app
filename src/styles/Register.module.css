@@ -1,6 +1,6 @@
 .register {
   background-color: white;
-  width: 480px;
+  width: 330px;
   margin: 12px auto;
   padding: 1rem;
   box-sizing: border-box;
@@ -15,13 +15,14 @@
 .form_group {
   box-sizing: border-box;
   margin: 8px auto;
-  width: 60%;
+  width: 90%;
 }
 
 .form_group input {
   padding: 12px 8px;
   outline: none;
   width: 100%;
+  font-size: medium;
   box-sizing: border-box;
   border: 1px solid gray;
   border-color: var(--color_maroon_light);
@@ -47,4 +48,48 @@
 
 .already_section a {
   color: var(--color_maroon_light);
+}
+
+@media screen and (min-width: 1200px) {
+  .register {
+    width: 580px;
+    margin: 12px auto;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  /*Tablets [601px -> 1200px]*/
+  .register {
+    width: 520px;
+    margin: 12px auto;
+  }
+
+  .form_group {
+    margin: 10px auto;
+    width: 80%;
+  }
+}
+@media only screen and (max-width: 600px) {
+  /*Big smartphones [426px -> 600px]*/
+  .register {
+    width: 440px;
+    margin: 18px auto;
+  }
+
+  .form_group {
+    margin: 8px auto;
+    width: 90%;
+  }
+}
+@media only screen and (max-width: 425px) {
+  /*Small smartphones [325px -> 425px]*/
+  .register {
+    width: 330px;
+    margin: 16px auto;
+    padding: 1rem 8px;
+  }
+  .form_group {
+    margin: 8px auto;
+    width: 90%;
+  }
 }
