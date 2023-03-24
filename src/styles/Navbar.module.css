@@ -21,6 +21,8 @@
 .navbar ul li a {
   text-decoration: none;
   color: unset;
+  font-size: larger;
+  font-weight: bold;
 }
 
 .navbar ul .brand a {
@@ -124,5 +126,9 @@
   /*Small smartphones [325px -> 425px]*/
   .navbar {
     padding: 10px 18px;
+  }
+  .navbar ul li a {
+    font-size: medium;
+    font-weight: bold;
   }
 }
