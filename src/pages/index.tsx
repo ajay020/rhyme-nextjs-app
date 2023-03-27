@@ -8,9 +8,10 @@ import Spinner from "@/components/Spinner";
 
 type PropTypes = {
   poems: PoemType[];
+  error: string;
 };
 
-export default function Home({ poems }: PropTypes) {
+export default function Home({ poems, error }: PropTypes) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,10 +28,10 @@ export default function Home({ poems }: PropTypes) {
       </Head>
       <main className={styles.main}>
         {loading && <Spinner loading={loading} />}
+        {error && <h2>{error}</h2>}
+        {poems?.length == 0 && <h2>No Poem found, Write one.</h2>}
 
-        {poems.length == 0 && <h2>No Poem found, Write one.</h2>}
-
-        {poems.map((poem) => (
+        {poems?.map((poem) => (
           <Poem poem={poem} key={poem._id} />
         ))}
       </main>
@@ -41,11 +42,24 @@ export default function Home({ poems }: PropTypes) {
 export async function getServerSideProps() {
   let poems = [];
   try {
-    const res = await fetch(BASE_URL + "/api/poem");
+    const res = await fetchWithTimeout(BASE_URL + "/api/poem", {}, 30000);
     poems = await res.json();
+    return { props: { poems } };
   } catch (error: any) {
     console.log(error.message);
+    return { props: { error: "Request timed out" } };
   }
+}
 
-  return { props: { poems } };
+function fetchWithTimeout(
+  url: string,
+  options: RequestInit,
+  timeout: number = 5000
+): Promise<Response> {
+  return Promise.race([
+    fetch(url, options),
+    new Promise<Response>((_, reject) =>
+      setTimeout(() => reject(new Error("Request timed out")), timeout)
+    ),
+  ]);
 }
