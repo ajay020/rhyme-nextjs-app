@@ -6,15 +6,30 @@ import { ParsedUrlQuery } from "querystring";
 import styles from "../../styles/UpdatePoem.module.css";
 import { BASE_URL } from "@/common/config";
 import Spinner from "@/components/Spinner";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]";
+import { useSession } from "next-auth/react";
+import { getPoem } from "@/controller/get_Poem";
+import { InferGetServerSidePropsType } from "next";
 
 interface Props {
   poem: PoemType;
 }
 
-export default function UpdatePoem({ poem }: Props) {
+export default function UpdatePoem({
+  poem,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [title, setTitle] = useState(poem?.title || "");
   const [description, setDescription] = useState(poem?.description || "");
   const [loading, setLoading] = useState(false);
+
+  const { data: session } = useSession();
+
+  if (typeof window === "undefined") return null;
+
+  if (!session) {
+    return <p>You are not LoggedIN</p>;
+  }
 
   const router = useRouter();
 
@@ -22,24 +37,18 @@ export default function UpdatePoem({ poem }: Props) {
     e.preventDefault();
 
     try {
-      const userString = localStorage.getItem("user");
-      let user;
-      if (userString) {
-        user = JSON.parse(userString);
-      }
-
       if (title && description) {
         setLoading(true);
         const response = await fetch(BASE_URL + `/api/poem/${poem._id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + user?.token,
           },
           body: JSON.stringify({ title, description }),
         });
 
         const data = await response.json();
+        console.log({ data });
         router.push("/");
       }
     } catch (error) {
@@ -82,7 +91,20 @@ export default function UpdatePoem({ poem }: Props) {
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({
   params,
+  req,
+  res,
 }: GetServerSidePropsContext<ParsedUrlQuery>) => {
+  const session = await getServerSession(req, res, authOptions);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
   let poemId: string | undefined;
 
   let poem;
@@ -97,8 +119,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
         notFound: true,
       };
     }
-    const response = await fetch(BASE_URL + `/api/poem/${poemId}`);
-    poem = await response.json();
+
+    poem = await getPoem(poemId);
   } catch (error: any) {
     console.log(error.message);
   }
@@ -106,7 +128,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   // Pass the post data as props to the component
   return {
     props: {
-      poem,
+      poem: JSON.parse(JSON.stringify(poem)),
     },
   };
 };

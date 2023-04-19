@@ -1,14 +1,11 @@
 import styles from "../styles/WritePoem.module.css";
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/router";
-import { BASE_URL } from "@/common/config";
 import Spinner from "@/components/Spinner";
-
-interface UserData {
-  name: string;
-  email: string;
-  token: string;
-}
+import { useSession } from "next-auth/react";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 export default function WritePoem() {
   const [title, setTitle] = useState("");
@@ -16,33 +13,38 @@ export default function WritePoem() {
   const [description, setDescription] = useState("");
   const router = useRouter();
 
+  const { data: session, status } = useSession();
+
+  if (status !== "authenticated") {
+    router.push("/api/auth/signin");
+  }
+
   const submitPoem = async (e: FormEvent) => {
     e.preventDefault();
 
-    let userString = localStorage.getItem("user");
-    let user;
-
-    if (userString) {
-      user = JSON.parse(userString) as UserData;
-    }
-
     try {
-      if (title && description && user) {
+      if (title && description && session) {
         setLoading(true);
         const poem = { title, description };
-        const response = await fetch(BASE_URL + "/api/poem", {
-          method: "post",
+
+        const response = await fetch("http://localhost:3000/api/poem", {
+          method: "POST",
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            authorization: "Bearer " + user?.token,
           },
           body: JSON.stringify(poem),
         });
+
+        if (!response.ok) {
+          throw new Error("Something went wrong");
+        }
+
         const data = await response.json();
         router.push("/");
       }
-    } catch (error: any) {
-      console.log(error.message);
+    } catch (error) {
+      console.log((error as Error).message);
     } finally {
       setLoading(false);
     }
@@ -76,3 +78,30 @@ export default function WritePoem() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  // Check session on server side
+
+  const { req, res } = context;
+
+  const session = await getServerSession(req, res, authOptions);
+
+  if (!session) {
+    // Redirect to login page if session is not found
+    return {
+      redirect: {
+        destination: "/api/auth/signin",
+        permanent: false,
+      },
+    };
+  }
+
+  // Pass session data to the protected page
+  return {
+    props: {
+      session: JSON.parse(JSON.stringify(session)),
+    },
+  };
+};

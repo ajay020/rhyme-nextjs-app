@@ -3,6 +3,8 @@ import styles from "../styles/Register.module.css";
 import { AuthContext } from "../components/AuthProvider";
 import Link from "next/link";
 import Spinner from "@/components/Spinner";
+import { BASE_URL } from "@/common/config";
+import { signIn } from "next-auth/react";
 
 function RegisterForm() {
   const [name, setName] = useState<string>("");
@@ -15,7 +17,22 @@ function RegisterForm() {
     e.preventDefault();
 
     if (name && email && password) {
-      register({ name, email, password });
+      const userData = { name, email, password };
+
+      try {
+        const response = await fetch(BASE_URL + "/api/auth/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        });
+        const data = await response.json();
+
+        console.log({ data });
+      } catch (error) {
+        console.log((error as Error).message);
+      }
     }
   };
 
@@ -29,6 +46,7 @@ function RegisterForm() {
           <input
             type="text"
             placeholder="Name"
+            required
             onChange={(e) => setName(e.target.value)}
           />
         </div>
@@ -36,6 +54,7 @@ function RegisterForm() {
           <input
             type="email"
             placeholder="Email"
+            required
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -43,6 +62,7 @@ function RegisterForm() {
           <input
             type="password"
             placeholder="Password"
+            required
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>

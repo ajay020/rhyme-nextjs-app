@@ -1,21 +1,10 @@
+import { useSession, signOut } from "next-auth/react";
 import styles from "../styles/UserPopup.module.css";
-import { useContext } from "react";
-import { AuthContext } from "./AuthProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOut, faUser } from "@fortawesome/free-solid-svg-icons";
 
-type User = {
-  name: string;
-  email: string;
-  token: string;
-};
-
-interface Props {
-  user: User | null;
-}
-
-function UserPopup({ user }: Props) {
-  const { logout } = useContext(AuthContext);
+function UserPopup() {
+  const { data: session } = useSession();
 
   return (
     <div className={styles.user_popup}>
@@ -23,13 +12,13 @@ function UserPopup({ user }: Props) {
         <li className={styles.user_info}>
           <FontAwesomeIcon icon={faUser} />
           <div>
-            <p>{user?.name}</p>
-            <p>{user?.email}</p>
+            <p>{session?.user?.name}</p>
+            <p>{session?.user?.email}</p>
           </div>
         </li>
         <hr style={{ color: "gray", width: "100%" }} />
         <li className={styles.logout_btn}>
-          <p onClick={() => logout()}>
+          <p onClick={() => signOut()}>
             <FontAwesomeIcon icon={faSignOut} style={{ fontSize: 16 }} />
             <span> Logout</span>
           </p>

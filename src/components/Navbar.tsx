@@ -1,5 +1,7 @@
-import { useContext, useState, useEffect, useRef } from "react";
-import { AuthContext } from "./AuthProvider";
+import { useState, useEffect, useRef } from "react";
+import { useSession, signIn } from "next-auth/react";
+import Link from "next/link";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAdd,
@@ -8,18 +10,16 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "../styles/Navbar.module.css";
 import UserPopup from "./UserPopup";
-import Link from "next/link";
-
-const BASE_URL = "http://localhost:8000";
 
 export default function Navbar() {
-  const { user } = useContext(AuthContext);
   const [visible, setVisible] = useState(false);
   const [dialogPosition, setDialogPosition] = useState({
     top: 55,
     left: 0,
     right: 10,
   });
+
+  const { data: session, status } = useSession();
 
   const userIconRef = useRef<HTMLLIElement>(null);
 
@@ -76,13 +76,20 @@ export default function Navbar() {
           />
           <Link href="/">Rhyme</Link>
         </li>
-        {!user && (
+        {!session && (
           <li className={styles.register_link}>
-            <Link href={"/register"}>Register</Link>
+            <Link
+              href={"#"}
+              onClick={() => {
+                signIn();
+              }}
+            >
+              Register
+            </Link>
           </li>
         )}
 
-        {user && (
+        {session && (
           <>
             <li className={styles.write_link}>
               <div className={styles.write_poem}>
@@ -92,6 +99,7 @@ export default function Navbar() {
                 </Link>
               </div>
             </li>
+
             <li className="user" ref={userIconRef}>
               <div className={styles.user_icon} onClick={handleUserIconClick}>
                 <FontAwesomeIcon
@@ -113,7 +121,7 @@ export default function Navbar() {
         id="dialogWrapper"
         className={styles.dialogWrapper}
       >
-        {visible && user && <UserPopup user={user} />}
+        {visible && session && <UserPopup />}
       </div>
     </nav>
   );

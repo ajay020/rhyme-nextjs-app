@@ -3,17 +3,34 @@ import styles from "../styles/Register.module.css";
 import { AuthContext } from "../components/AuthProvider";
 import Link from "next/link";
 import Spinner from "@/components/Spinner";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
 function LoginForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const { login, loading, error } = useContext(AuthContext);
 
-  const loginUser = async (e: FormEvent) => {
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (email && password) {
-      login(email, password);
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false, // prevent NextAuth from redirecting on success
+      });
+
+      if (result?.error) {
+        console.log(result.error);
+      }
+
+      router.push("/"); // redirect to home page
+    } catch (error) {
+      console.log(error);
+      console.log((error as Error).message);
     }
   };
 
@@ -21,7 +38,7 @@ function LoginForm() {
     <div className={styles.register}>
       <h2>Login Form</h2>
       {loading && <Spinner loading={loading} />}
-      <form onSubmit={loginUser}>
+      <form onSubmit={handleSubmit}>
         {error && <div>{error}</div>}
         <div className={styles.form_group}>
           <input

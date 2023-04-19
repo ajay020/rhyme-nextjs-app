@@ -3,8 +3,8 @@ import Head from "next/head";
 import { PoemType } from "@/model/Types";
 import { Poem } from "@/components/Poem";
 import styles from "@/styles/Home.module.css";
-import { BASE_URL } from "@/common/config";
 import Spinner from "@/components/Spinner";
+import { connectToDatabase } from "@/util/db";
 
 type PropTypes = {
   poems: PoemType[];
@@ -39,27 +39,23 @@ export default function Home({ poems, error }: PropTypes) {
   );
 }
 
-export async function getServerSideProps() {
-  let poems = [];
+export async function getStaticProps() {
   try {
-    const res = await fetchWithTimeout(BASE_URL + "/api/poem", {}, 30000);
-    poems = await res.json();
-    return { props: { poems } };
-  } catch (error: any) {
-    console.log(error.message);
-    return { props: { error: "Request timed out" } };
-  }
-}
+    const { db } = await connectToDatabase();
 
-function fetchWithTimeout(
-  url: string,
-  options: RequestInit,
-  timeout: number = 5000
-): Promise<Response> {
-  return Promise.race([
-    fetch(url, options),
-    new Promise<Response>((_, reject) =>
-      setTimeout(() => reject(new Error("Request timed out")), timeout)
-    ),
-  ]);
+    const poems = await db.collection("poems").find({}).limit(10).toArray();
+    poems.reverse();
+    return {
+      props: {
+        poems: JSON.parse(JSON.stringify(poems)),
+      },
+    };
+  } catch (e) {
+    console.error(e);
+    return {
+      props: {
+        error: (e as Error).message,
+      },
+    };
+  }
 }

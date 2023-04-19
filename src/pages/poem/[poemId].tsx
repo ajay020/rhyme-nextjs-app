@@ -1,6 +1,13 @@
 import { useContext, useState, useEffect } from "react";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import {
+  GetStaticProps,
+  GetStaticPropsContext,
+  GetStaticPaths,
+  GetStaticPropsResult,
+  GetStaticPathsResult,
+} from "next";
 import { ParsedUrlQuery } from "querystring";
+import { ObjectId } from "mongodb";
 
 import { useRouter } from "next/router";
 import { PoemType } from "@/model/Types";
@@ -8,19 +15,26 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import styles from "../../styles/SinglePoem.module.css";
-import { AuthContext } from "../../components/AuthProvider";
 import { BASE_URL } from "@/common/config";
 import Link from "next/link";
 import Spinner from "@/components/Spinner";
+import { connectToDatabase } from "@/util/db";
+import { useSession } from "next-auth/react";
+import { getPoem } from "@/controller/get_Poem";
 
 interface Props {
   poem: PoemType;
 }
 
+interface Params extends ParsedUrlQuery {
+  poemId: string;
+}
+
 export default function SinglePoem({ poem }: Props) {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const { user } = useContext(AuthContext);
+
+  const { data: session } = useSession();
 
   useEffect(() => {
     setLoading(false);
@@ -28,19 +42,13 @@ export default function SinglePoem({ poem }: Props) {
 
   const deletePoem = async () => {
     try {
-      const userString = localStorage.getItem("user");
-      let user;
-      if (userString) {
-        user = JSON.parse(userString);
-      }
-
       const response = await fetch(BASE_URL + `/api/poem/${poem._id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + user.token,
         },
       });
+
       const data = await response.json();
       alert("Poem Deleted!");
       router.push("/");
@@ -53,7 +61,7 @@ export default function SinglePoem({ poem }: Props) {
     <div className={styles.container}>
       <Spinner loading={loading} />
       <div className={styles.header}>
-        {user?._id == poem.author?._id && (
+        {session?.user?.id == poem.author?._id && (
           <div className={styles.actions}>
             <Link className={styles.btn} href={`/update-poem/${poem._id}`}>
               <FontAwesomeIcon
@@ -81,29 +89,50 @@ export default function SinglePoem({ poem }: Props) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
+export const getStaticPaths: GetStaticPaths<Params> = async (): Promise<
+  GetStaticPathsResult<Params>
+> => {
+  const { db, client } = await connectToDatabase();
+
+  const poemCollection = db.collection("poems");
+
+  const poems = await poemCollection
+    .find({}, { projection: { _id: 1 } })
+    .toArray();
+
+  const paths = poems.map((poem) => ({
+    params: { poemId: poem._id.toString() },
+  }));
+
+  client.close();
+
+  return {
+    fallback: false,
+    paths,
+  };
+};
+
+export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
-}: GetServerSidePropsContext<ParsedUrlQuery>) => {
-  let poemId: string | undefined;
-  let poem;
-  try {
-    if (params && typeof params.poemId == "string") {
-      poemId = params.poemId;
-    }
+}: GetStaticPropsContext<Params>): Promise<GetStaticPropsResult<Props>> => {
+  if (!params || !params.poemId) {
+    return { notFound: true };
+  }
 
-    if (!poemId) {
-      return {
-        notFound: true,
-      };
-    }
-    const response = await fetch(BASE_URL + `/api/poem/${poemId}`);
-    poem = await response.json();
-  } catch (error) {}
+  let poem = await getPoem(params.poemId);
 
-  // Pass the post data as props to the component
+  if (!poem) {
+    return { notFound: true };
+  }
+
   return {
     props: {
-      poem,
+      poem: {
+        _id: poem._id.toString(),
+        title: poem.title,
+        description: poem.description,
+        author: JSON.parse(JSON.stringify(poem.author)),
+      },
     },
   };
 };

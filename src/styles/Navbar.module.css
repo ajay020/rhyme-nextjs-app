@@ -1,9 +1,11 @@
 .navbar {
   background-color: var(--color_maroon_dark);
-  padding: 12px 18px;
+  padding: 12LogoutLogoutpx 18px;
   color: var(--color_beige);
   width: 100%;
   box-sizing: border-box;
+  position: sticky;
+  top: 0;
 }
 
 .brand .logo {
@@ -46,7 +48,7 @@
 
 .write_poem {
   background-color: var(--color_beige);
-  padding: 8px 8px;
+  padding: 4px 6px;
   color: var(--color_maroon_dark);
   border-radius: 12px;
   cursor: pointer;
@@ -68,7 +70,7 @@
 
 @media screen and (min-width: 1200px) {
   .navbar {
-    padding: 16px 18px;
+    padding: 12px 18px;
   }
   .navbar ul {
     display: flex;
@@ -104,7 +106,7 @@
 @media screen and (max-width: 1200px) {
   /*Tablets [601px -> 1200px]*/
   .navbar {
-    padding: 16px 18px;
+    padding: 12px 18px;
   }
 
   .navbar ul {
