@@ -38,7 +38,7 @@ export default function SinglePoem({ poem }: Props) {
 
   useEffect(() => {
     setLoading(false);
-  });
+  }, []);
 
   const deletePoem = async () => {
     try {
@@ -92,7 +92,7 @@ export default function SinglePoem({ poem }: Props) {
 export const getStaticPaths: GetStaticPaths<Params> = async (): Promise<
   GetStaticPathsResult<Params>
 > => {
-  const { db, client } = await connectToDatabase();
+  const { db } = await connectToDatabase();
 
   const poemCollection = db.collection("poems");
 
@@ -103,8 +103,6 @@ export const getStaticPaths: GetStaticPaths<Params> = async (): Promise<
   const paths = poems.map((poem) => ({
     params: { poemId: poem._id.toString() },
   }));
-
-  client.close();
 
   return {
     fallback: false,

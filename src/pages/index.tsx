@@ -16,7 +16,7 @@ export default function Home({ poems, error }: PropTypes) {
 
   useEffect(() => {
     setLoading(false);
-  });
+  }, []);
 
   return (
     <>

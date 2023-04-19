@@ -22,6 +22,7 @@ export default function UpdatePoem({
   const [title, setTitle] = useState(poem?.title || "");
   const [description, setDescription] = useState(poem?.description || "");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const { data: session } = useSession();
 
@@ -30,8 +31,6 @@ export default function UpdatePoem({
   if (!session) {
     return <p>You are not LoggedIN</p>;
   }
-
-  const router = useRouter();
 
   const updatePoem = async (e: FormEvent) => {
     e.preventDefault();
