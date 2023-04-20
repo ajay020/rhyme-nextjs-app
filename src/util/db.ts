@@ -24,7 +24,7 @@ export async function connectToDatabase() {
   const client = await MongoClient.connect(uri, options);
   await client.connect();
 
-  const db = await client.db("test");
+  const db = client.db(process.env.MONGO_DB);
 
   cachedClient = client;
   cachedDb = db;

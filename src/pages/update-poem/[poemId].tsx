@@ -29,7 +29,7 @@ export default function UpdatePoem({
   if (typeof window === "undefined") return null;
 
   if (!session) {
-    return <p>You are not LoggedIN</p>;
+    return <p>You are not LoggedIn</p>;
   }
 
   const updatePoem = async (e: FormEvent) => {
@@ -38,13 +38,16 @@ export default function UpdatePoem({
     try {
       if (title && description) {
         setLoading(true);
-        const response = await fetch(BASE_URL + `/api/poem/${poem._id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ title, description }),
-        });
+        const response = await fetch(
+          process.env.NEXT_PUBLIC_APP_URL + `/api/poem/${poem._id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ title, description }),
+          }
+        );
 
         const data = await response.json();
         console.log({ data });
@@ -98,7 +101,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   if (!session) {
     return {
       redirect: {
-        destination: "/login",
+        destination: "/api/auth/signin",
         permanent: false,
       },
     };

@@ -42,12 +42,15 @@ export default function SinglePoem({ poem }: Props) {
 
   const deletePoem = async () => {
     try {
-      const response = await fetch(BASE_URL + `/api/poem/${poem._id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_APP_URL + `/api/poem/${poem._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
       alert("Poem Deleted!");

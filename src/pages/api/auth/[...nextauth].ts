@@ -1,4 +1,10 @@
-import NextAuth, { AuthOptions, Session, User } from "next-auth";
+import NextAuth, {
+  Account,
+  AuthOptions,
+  Profile,
+  Session,
+  User,
+} from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 // import clientPromise from "@/util/mongodb";
@@ -13,7 +19,6 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_ID || "",
       clientSecret: process.env.GOOGLE_SECRET || "",
-      //   callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/`,
     }),
     Credentials({
       name: "Credentials",
@@ -62,6 +67,10 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
+    async signIn({ user, account, profile }) {
+      // Specify the redirect URI for successful authentication
+      return `${process.env.NEXT_PUBLIC_APP_URL}`;
+    },
     async jwt({ token, account }) {
       // Persist the OAuth access_token to the token right after signin
       if (account?.access_token) {

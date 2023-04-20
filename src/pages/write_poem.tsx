@@ -27,14 +27,17 @@ export default function WritePoem() {
         setLoading(true);
         const poem = { title, description };
 
-        const response = await fetch("http://localhost:3000/api/poem", {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(poem),
-        });
+        const response = await fetch(
+          process.env.NEXT_PUBLIC_APP_URL + "/api/poem",
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(poem),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Something went wrong");
