@@ -17,7 +17,6 @@ export default async function handler(
   if (req.method == "POST") {
     try {
       const session = await getServerSession(req, res, authOptions);
-      //   console.log({ "Session>>>>>>": session });
 
       if (!session) {
         res.status(401).json({ message: "Unauthorized" });

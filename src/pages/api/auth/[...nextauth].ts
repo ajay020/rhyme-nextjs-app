@@ -67,10 +67,11 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async signIn({ user, account, profile }) {
-      // Specify the redirect URI for successful authentication
-      return `${process.env.NEXT_PUBLIC_APP_URL}`;
-    },
+    // async signIn({ user, account, profile }) {
+    //   // Specify the redirect URI for successful authentication
+    //   console.log({ user });
+    //   return `${process.env.NEXT_PUBLIC_APP_URL}`;
+    // },
     async jwt({ token, account }) {
       // Persist the OAuth access_token to the token right after signin
       if (account?.access_token) {

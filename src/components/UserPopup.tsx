@@ -1,7 +1,7 @@
 import { useSession, signOut } from "next-auth/react";
-import styles from "../styles/UserPopup.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOut, faUser } from "@fortawesome/free-solid-svg-icons";
+import styles from "../styles/UserPopup.module.css";
 
 function UserPopup() {
   const { data: session } = useSession();

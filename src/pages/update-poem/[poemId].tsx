@@ -4,7 +4,6 @@ import { PoemType } from "@/model/Types";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { ParsedUrlQuery } from "querystring";
 import styles from "../../styles/UpdatePoem.module.css";
-import { BASE_URL } from "@/common/config";
 import Spinner from "@/components/Spinner";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";

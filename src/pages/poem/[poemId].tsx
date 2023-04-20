@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   GetStaticProps,
   GetStaticPropsContext,
@@ -7,7 +7,6 @@ import {
   GetStaticPathsResult,
 } from "next";
 import { ParsedUrlQuery } from "querystring";
-import { ObjectId } from "mongodb";
 
 import { useRouter } from "next/router";
 import { PoemType } from "@/model/Types";
@@ -15,7 +14,6 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import styles from "../../styles/SinglePoem.module.css";
-import { BASE_URL } from "@/common/config";
 import Link from "next/link";
 import Spinner from "@/components/Spinner";
 import { connectToDatabase } from "@/util/db";

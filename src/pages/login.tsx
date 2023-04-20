@@ -1,15 +1,12 @@
-import { useState, FormEvent, useContext } from "react";
+import { useState } from "react";
 import styles from "../styles/Register.module.css";
-import { AuthContext } from "../components/AuthProvider";
 import Link from "next/link";
-import Spinner from "@/components/Spinner";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 
 function LoginForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { login, loading, error } = useContext(AuthContext);
 
   const router = useRouter();
 
@@ -37,9 +34,9 @@ function LoginForm() {
   return (
     <div className={styles.register}>
       <h2>Login Form</h2>
-      {loading && <Spinner loading={loading} />}
+      {/* {loading && <Spinner loading={loading} />} */}
       <form onSubmit={handleSubmit}>
-        {error && <div>{error}</div>}
+        {/* {error && <div>{error}</div>} */}
         <div className={styles.form_group}>
           <input
             type="email"

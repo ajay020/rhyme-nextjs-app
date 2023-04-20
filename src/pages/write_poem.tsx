@@ -85,8 +85,6 @@ export default function WritePoem() {
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  // Check session on server side
-
   const { req, res } = context;
 
   const session = await getServerSession(req, res, authOptions);

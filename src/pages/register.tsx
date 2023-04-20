@@ -1,36 +1,37 @@
 import { FormEvent, useState, useContext } from "react";
 import styles from "../styles/Register.module.css";
-import { AuthContext } from "../components/AuthProvider";
 import Link from "next/link";
 import Spinner from "@/components/Spinner";
-import { BASE_URL } from "@/common/config";
-import { signIn } from "next-auth/react";
 
 function RegisterForm() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const { register, loading, error } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const registerUser = async (e: FormEvent) => {
     e.preventDefault();
 
     if (name && email && password) {
       const userData = { name, email, password };
-
+      setLoading(true);
       try {
-        const response = await fetch(BASE_URL + "/api/auth/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(userData),
-        });
+        const response = await fetch(
+          process.env.NEXT_PUBLIC_APP_URL + "/api/auth/register",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userData),
+          }
+        );
         const data = await response.json();
-
-        console.log({ data });
       } catch (error) {
+        setLoading(false);
+        setError((error as Error).message);
         console.log((error as Error).message);
       }
     }
@@ -72,7 +73,7 @@ function RegisterForm() {
       </form>
       <div className={styles.already_section}>
         <p>
-          Already SignedUp? <Link href="/login">Login</Link>
+          Already SignedUp? <Link href="/signup">Login</Link>
         </p>
       </div>
     </div>
