@@ -6,8 +6,7 @@ import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import Credentials from "next-auth/providers/credentials";
 import { connectToDatabase } from "@/util/db";
 import { compare } from "bcryptjs";
-import { Db, MongoClient } from "mongodb";
-import { getAdapterConfig } from "@/util/mongodb";
+import clientPromise from "@/util/mongodb";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -58,7 +57,7 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
-  adapter: MongoDBAdapter(getAdapterConfig() as { db: Db }),
+  adapter: MongoDBAdapter(clientPromise),
   session: {
     strategy: "jwt",
   },
