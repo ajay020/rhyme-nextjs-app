@@ -1,11 +1,13 @@
 import NextAuth, { AuthOptions, Session, User } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import clientPromise from "@/util/mongodb";
+// import clientPromise from "@/util/mongodb";
 
 import Credentials from "next-auth/providers/credentials";
 import { connectToDatabase } from "@/util/db";
 import { compare } from "bcryptjs";
+import { Db, MongoClient } from "mongodb";
+import { getAdapterConfig } from "@/util/mongodb";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -56,7 +58,7 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
-  adapter: MongoDBAdapter(clientPromise),
+  adapter: MongoDBAdapter(getAdapterConfig() as { db: Db }),
   session: {
     strategy: "jwt",
   },
