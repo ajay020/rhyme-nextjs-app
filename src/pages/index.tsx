@@ -39,7 +39,7 @@ export default function Home({ poems, error }: PropTypes) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   try {
     const { db } = await connectToDatabase();
 
