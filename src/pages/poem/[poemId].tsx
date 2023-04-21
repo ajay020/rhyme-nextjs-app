@@ -124,13 +124,15 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     return { notFound: true };
   }
 
+  console.log({ poem });
+
   return {
     props: {
       poem: {
         _id: poem._id.toString(),
         title: poem.title,
         description: poem.description,
-        author: JSON.parse(JSON.stringify(poem.author)),
+        author: JSON.parse(JSON.stringify(poem?.author)),
       },
     },
     // revalidate: 10,
