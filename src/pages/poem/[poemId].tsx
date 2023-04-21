@@ -127,13 +127,11 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
       return { notFound: true };
     }
 
-    let poem = await getPoem(params.poemId);
+    let poem = (await getPoem(params.poemId)) as PoemType;
 
     if (!poem) {
       return { notFound: true };
     }
-
-    console.log({ poem });
 
     return {
       props: {

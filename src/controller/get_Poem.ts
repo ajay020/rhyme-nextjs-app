@@ -29,5 +29,6 @@ export async function getPoem(poemId: string) {
     .toArray();
 
   let poem = result[0];
+  poem;
   return poem;
 }
