@@ -21,14 +21,15 @@ import { useSession } from "next-auth/react";
 import { getPoem } from "@/controller/get_Poem";
 
 interface Props {
-  poem: PoemType;
+  poem?: PoemType;
+  error?: string;
 }
 
 interface Params extends ParsedUrlQuery {
   poemId: string;
 }
 
-export default function SinglePoem({ poem }: Props) {
+export default function SinglePoem({ poem, error }: Props) {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -41,7 +42,7 @@ export default function SinglePoem({ poem }: Props) {
   const deletePoem = async () => {
     try {
       const response = await fetch(
-        process.env.NEXT_PUBLIC_APP_URL + `/api/poem/${poem._id}`,
+        process.env.NEXT_PUBLIC_APP_URL + `/api/poem/${poem?._id}`,
         {
           method: "DELETE",
           headers: {
@@ -61,10 +62,11 @@ export default function SinglePoem({ poem }: Props) {
   return (
     <div className={styles.container}>
       <Spinner loading={loading} />
+      {error && <p>{error}</p>}
       <div className={styles.header}>
-        {session?.user?.id == poem.author?._id && (
+        {session?.user?.id == poem?.author?._id && (
           <div className={styles.actions}>
-            <Link className={styles.btn} href={`/update-poem/${poem._id}`}>
+            <Link className={styles.btn} href={`/update-poem/${poem?._id}`}>
               <FontAwesomeIcon
                 style={{ fontSize: 14, color: "black" }}
                 icon={faEdit}
@@ -84,7 +86,7 @@ export default function SinglePoem({ poem }: Props) {
       </div>
 
       <div className={styles.body}>
-        <p>{poem.description}</p>
+        <p>{poem?.description}</p>
       </div>
     </div>
   );
@@ -114,27 +116,35 @@ export const getStaticPaths: GetStaticPaths<Params> = async (): Promise<
 export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }: GetStaticPropsContext<Params>): Promise<GetStaticPropsResult<Props>> => {
-  if (!params || !params.poemId) {
-    return { notFound: true };
-  }
+  try {
+    if (!params || !params.poemId) {
+      return { notFound: true };
+    }
 
-  let poem = await getPoem(params.poemId);
+    let poem = await getPoem(params.poemId);
 
-  if (!poem) {
-    return { notFound: true };
-  }
+    if (!poem) {
+      return { notFound: true };
+    }
 
-  console.log({ poem });
+    console.log({ poem });
 
-  return {
-    props: {
-      poem: {
-        _id: poem._id.toString(),
-        title: poem.title,
-        description: poem.description,
-        author: JSON.parse(JSON.stringify(poem?.author)),
+    return {
+      props: {
+        poem: {
+          _id: poem._id.toString(),
+          title: poem.title,
+          description: poem.description,
+          author: JSON.parse(JSON.stringify(poem?.author)),
+        },
       },
-    },
-    // revalidate: 10,
-  };
+      // revalidate: 10,
+    };
+  } catch (error) {
+    return {
+      props: {
+        error: (error as Error).message,
+      },
+    };
+  }
 };
