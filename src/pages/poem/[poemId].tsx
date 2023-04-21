@@ -133,6 +133,6 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
         author: JSON.parse(JSON.stringify(poem.author)),
       },
     },
-    revalidate: 10,
+    // revalidate: 10,
   };
 };
