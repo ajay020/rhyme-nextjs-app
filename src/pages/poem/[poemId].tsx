@@ -21,15 +21,14 @@ import { useSession } from "next-auth/react";
 import { getPoem } from "@/controller/get_Poem";
 
 interface Props {
-  poem?: PoemType;
-  error?: string;
+  poem: PoemType | null;
 }
 
 interface Params extends ParsedUrlQuery {
   poemId: string;
 }
 
-export default function SinglePoem({ poem, error }: Props) {
+export default function SinglePoem({ poem }: Props) {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -62,7 +61,6 @@ export default function SinglePoem({ poem, error }: Props) {
   return (
     <div className={styles.container}>
       <Spinner loading={loading} />
-      {error && <p>{error}</p>}
       <div className={styles.header}>
         {session?.user?.id == poem?.author?._id && (
           <div className={styles.actions}>
@@ -95,22 +93,30 @@ export default function SinglePoem({ poem, error }: Props) {
 export const getStaticPaths: GetStaticPaths<Params> = async (): Promise<
   GetStaticPathsResult<Params>
 > => {
-  const { db } = await connectToDatabase();
+  try {
+    const { db } = await connectToDatabase();
 
-  const poemCollection = db.collection("poems");
+    const poemCollection = db.collection("poems");
 
-  const poems = await poemCollection
-    .find({}, { projection: { _id: 1 } })
-    .toArray();
+    const poems = await poemCollection
+      .find({}, { projection: { _id: 1 } })
+      .toArray();
 
-  const paths = poems.map((poem) => ({
-    params: { poemId: poem._id.toString() },
-  }));
+    const paths = poems.map((poem) => ({
+      params: { poemId: poem._id.toString() },
+    }));
 
-  return {
-    fallback: true,
-    paths,
-  };
+    return {
+      fallback: true,
+      paths,
+    };
+  } catch (error) {
+    console.error("Error fetching paths:", error);
+    return {
+      fallback: true,
+      paths: [],
+    };
+  }
 };
 
 export const getStaticProps: GetStaticProps<Props, Params> = async ({
@@ -138,12 +144,12 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
           author: JSON.parse(JSON.stringify(poem?.author)),
         },
       },
-      // revalidate: 10,
     };
   } catch (error) {
+    console.error("Error fetching poem:", error);
     return {
       props: {
-        error: (error as Error).message,
+        poem: null,
       },
     };
   }
