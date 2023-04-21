@@ -106,7 +106,7 @@ export const getStaticPaths: GetStaticPaths<Params> = async (): Promise<
   }));
 
   return {
-    fallback: false,
+    fallback: true,
     paths,
   };
 };
@@ -133,5 +133,6 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
         author: JSON.parse(JSON.stringify(poem.author)),
       },
     },
+    revalidate: 10,
   };
 };
